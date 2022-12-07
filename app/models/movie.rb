@@ -13,13 +13,24 @@
 #  director_id :integer
 #
 class Movie < ApplicationRecord
+  validates(:director_id, presence: true)
+  validates(:title, uniqueness: {scope: [:year]})
+
   def director
     my_director_id = self.director_id
 
     matching_directors = Director.where({ :id => my_director_id })
-    
+
     the_director = matching_directors.at(0)
 
     return the_director
   end
+
+  # def no_director_check
+  #   if self.director != nil
+  #     return self.director.name
+  #   else
+  #     return "no director found"
+  #   end
+  # end
 end
